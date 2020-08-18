@@ -27,13 +27,13 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'itchyny/vim-gitbranch'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --no-bash' }
-Plug 'junegunn/fzf.vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'sebdah/vim-delve'
 Plug 'wakatime/vim-wakatime'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'airblade/vim-gitgutter'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'chengzeyi/fzf-preview.vim'
 Plug 'sheerun/vim-polyglot'
 call plug#end()
@@ -48,9 +48,7 @@ set confirm
 set wildmenu
 set ts=4 sw=4
 set ttyfast
-set ttymouse=xterm2
-set ttymouse=sgr
-set ttyscroll=3
+" set ttyscroll=3
 set autoread
 set autoindent
 set smartindent
@@ -208,8 +206,6 @@ set background=dark
 let g:gruvbox_italicize_comments = 1
 let g:airline_theme = "gruvbox"
 
-set balloondelay=250
-
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
@@ -247,7 +243,6 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nnoremap <silent> <space>e  :<C-u>CocList diagnostics<cr>
 
-
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
@@ -258,6 +253,7 @@ inoremap jk <Esc>
 set nohlsearch
 
 let g:NERDTreeWinSize=40
+
 
 let &t_ZH="\e[3m"
 let &t_ZR="\e[23m"
@@ -294,6 +290,9 @@ let g:tagbar_type_go = {
 \ }
 
 let g:vimspector_enable_mappings = 'HUMAN'
+
+let g:python3_host_prog = "/usr/local/bin/python3"
+let g:python_host_prog = "/usr/bin/python"
 
 let g:gitgutter_override_sign_column_highlight = 0
 highlight clear SignColumn
