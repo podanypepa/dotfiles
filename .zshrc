@@ -163,6 +163,7 @@ export FZF_DEFAULT_OPTS="--preview-window 'right:50%' --preview 'preview.sh {}'"
 
 export PATH=$HOME/.cargo/bin:$PATH
 export PATH=$HOME/bin:$PATH
+export PATH=$HOME/go/bin:$PATH
 
 kill_port() {
 	if [ -n "$1" ]; then
