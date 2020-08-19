@@ -8,7 +8,6 @@ call plug#begin()
 Plug 'kevinoid/vim-jsonc'
 Plug 'puremourning/vimspector'
 Plug 'jbgutierrez/vim-better-comments'
-" Plug 'burner/vim-svelte'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install'  }
 Plug 'pangloss/vim-javascript'
 Plug 'preservim/nerdtree'
@@ -71,7 +70,6 @@ set splitright
 set autowrite
 set hidden
 set ignorecase
-" set completeopt=menu,menuone
 set pumheight=10
 set nocursorcolumn
 set cursorline
@@ -230,11 +228,8 @@ let g:prettier#exec_cmd_async = 1
 let g:prettier#autoformat_require_pragma = 0
 
 let g:fzf_nvim_statusline = 0
-" let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.9, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
-" let g:fzf_layout = {'up':'50%'}
+let g:fzf_layout = {'down':'50%'}
 
-let $FZF_DEFAULT_OPTS='--reverse'
-let g:startify_custom_header = []
 set statusline+=%F
 
 set fillchars=vert:\│
@@ -259,12 +254,12 @@ set nohlsearch
 
 let g:NERDTreeWinSize=40
 
-au! BufNewFile,BufRead *.svelte set ft=html
-" set grepprg=ag\ --vimgrep\ --smart-case\ --follow
 
 let &t_ZH="\e[3m"
 let &t_ZR="\e[23m"
 highlight Comment cterm=italic
+
+set grepprg=ag\ --vimgrep\ --smart-case\ --follow
 
 let g:tagbar_type_go = {
 	\ 'ctagstype' : 'go',
@@ -294,15 +289,7 @@ let g:tagbar_type_go = {
 	\ 'ctagsargs' : '-sort -silent'
 \ }
 
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
 let g:vimspector_enable_mappings = 'HUMAN'
-" nmap <leader>dd :call vimspector#Launch()<CR>
-" nmap <leader>dx :VimspectorReset<CR>
-" nmap <leader>de :VimspectorEval
-" nmap <leader>dw :VimspectorWatch
-" nmap <leader>do :VimspectorShowOutput
 
 let g:python3_host_prog = "/usr/local/bin/python3"
 let g:python_host_prog = "/usr/bin/python"
