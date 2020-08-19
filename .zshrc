@@ -1,9 +1,8 @@
 export LC_ALL=en_US.UTF-8
 ZSH_DISABLE_COMPFIX=true
-
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block, everything else may go below.
+# confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -18,11 +17,12 @@ export ZSH="/Users/pepa/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+# ZSH_THEME="robbyrussell"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# a theme from this variable instead of looking in $ZSH/themes/
 # If set to an empty array, this variable will have no effect.
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
@@ -43,7 +43,7 @@ ZSH_THEME="robbyrussell"
 # export UPDATE_ZSH_DAYS=13
 
 # Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS=true
+# DISABLE_MAGIC_FUNCTIONS="true"
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -74,15 +74,15 @@ ZSH_THEME="robbyrussell"
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
 # Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
 	zsh-autosuggestions
 	zsh-syntax-highlighting
 	git
-	autojump
+	z
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -100,12 +100,8 @@ source $ZSH/oh-my-zsh.sh
 # else
 #   export EDITOR='mvim'
 # fi
+
 export EDITOR="vim"
-#export TERM=xterm
-# export TERM="xterm-256color"
-# export TERM=screen-256color
-
-
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
@@ -117,17 +113,6 @@ export EDITOR="vim"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-source ~/powerlevel10k/powerlevel10k.zsh-theme
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-export PATH="$PATH:/Users/pepa/bin"
-export PATH="$PATH:/Users/pepa/go/bin"
-export PATH="$PATH:/Users/pepa/bin/mongo"
-export PATH="$PATH:/Users/pepa/go/bin"
-
 
 alias v="vim"
 # alias vim="nvim"
@@ -155,12 +140,6 @@ alias tml="t ls"
 alias cg="colorgo"
 alias myip='curl ipinfo.io/ip'
 
-
-# fd() {
-#   preview="git diff $@ --color=always -- {-1}"
-#   git diff $@ --name-only | fzf -m --ansi --preview $preview
-# }
-
 export GO111MODULE=auto
 export GOPRIVATE="gitlab.com/fastandcomfy/backend"
 export GOPRIVATE="$GOPRIVATE,gitlab.com/fastandcomfy/botstrapi"
@@ -172,22 +151,17 @@ export GOPRIVATE="$GOPRIVATE,gitlab.com/fastandcomfy/mngr_postgresql"
 export GOPRIVATE="$GOPRIVATE,gitlab.com/fastandcomfy/traficmonitor"
 export GOPRIVATE="$GOPRIVATE,github.com/fastandcomfy/shiny-waffle"
 
-# test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# source /Users/pepa/Library/Preferences/org.dystroy.broot/launcher/bash/br
-
+if [ -f /usr/local/bin/rg ]; then
+	export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git" --glob "!.svn"'
+fi
 export FZF_DEFAULT_OPTS="--preview-window 'right:50%' --preview 'preview.sh {}'"
-# export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git/*'"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export FZF_DEFAULT_COMMAND='ag --hidden --ignore node_modules  --ignore .git -l -g ""'
-
-export PATH="/usr/local/sbin:$PATH"
-# export ANSIBLE_INVENTORY=/Users/pepa/fastandcomfy/tools/ansible-scripts/hosts.yaml
-
-export GOBIN=~/go/bin/
-
-# eval $(ssh-agent -s) && ssh-add ~/.ssh/facpepa.rsa
-# bindkey -v
+export PATH=$HOME/.cargo/bin:$PATH
+export PATH=$HOME/bin:$PATH
 
 kill_port() {
 	if [ -n "$1" ]; then
@@ -209,6 +183,8 @@ tmd() {
 	t kill-session -t $(tmux ls | fzf --no-preview --prompt="select session " | awk '{split($0,a,":"); print a[1]}')
 }
 
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+unalias z 2> /dev/null
+z() {
+    [ $# -gt 0 ] && _z "$*" && return
+    cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --no-preview --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
+}
