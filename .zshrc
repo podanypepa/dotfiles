@@ -199,3 +199,4 @@ b() {
   | cut -d$'\t' -f2 \
   | xargs open
 }
+export BAT_THEME="1337"
