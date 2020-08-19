@@ -83,6 +83,7 @@ plugins=(
 	zsh-syntax-highlighting
 	git
 	z
+	fzf
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -187,4 +188,14 @@ unalias z 2> /dev/null
 z() {
     [ $# -gt 0 ] && _z "$*" && return
     cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --no-preview --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
+}
+
+b() {
+  local bookmarks_path=~/Library/Application\ Support/Google/Chrome/Default/Bookmarks
+  local jq_script='def ancestors: while(. | length >= 2; del(.[-1,-2])); . as $in | paths(.url?) as $key | $in | getpath($key) | {name,url, path: [$key[0:-2] | ancestors as $a | $in | getpath($a) | .name?] | reverse | join("/") } | .path + "/" + .name + "\t" + .url'
+  jq -r $jq_script < "$bookmarks_path" \
+  | sed -E $'s/(.*)\t(.*)/\\1\t\x1b[36m\\2\x1b[m/g' \
+  | fzf --ansi \
+  | cut -d$'\t' -f2 \
+  | xargs open
 }
