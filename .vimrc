@@ -79,6 +79,7 @@ set lazyredraw
 set laststatus=2
 set t_Co=256
 set wildignore+=.DS_Store
+set wildignore+=**/node_modules/**
 set wildignore+=*.pyc
 set wildignore+=.git
 set cmdheight=2
@@ -318,3 +319,4 @@ let g:fzf_colors =
   \ 'header':  ['fg', 'Comment'] }
 
 autocmd FileType json syntax match Comment +\/\/.\+$+
+
