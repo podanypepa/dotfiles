@@ -5,11 +5,11 @@ scriptencoding utf-8
 set encoding=UTF-8
 
 call plug#begin()
+Plug 'ervandew/supertab'
 Plug 'kevinoid/vim-jsonc'
 Plug 'puremourning/vimspector'
 Plug 'jbgutierrez/vim-better-comments'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install'  }
-Plug 'pangloss/vim-javascript'
 Plug 'preservim/nerdtree'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'junegunn/gv.vim'
